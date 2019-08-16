@@ -48,6 +48,8 @@ namespace chathubAPI
             services.AddDbContext<ApplicationDbContext>(opts =>
             opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IMessagesRepo, MessagesRepo>();
+
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
          .AddDefaultTokenProviders();
 
