@@ -28,18 +28,39 @@ namespace chathubAPI.Repositories
             }
         }
 
-        public List<ChatMessage> GetMessageHistory(string from, string to, int currentPage=1)
+        public List<ChatMessage> GetMessageHistory(string from, string to, int currentPage = 1)
         {
             int start = (currentPage - 1) * Helpers.Constants.MESSAGES_PER_PAGE;
             try
             {
-                return _dbContext.Μessages.Where(x => x.from == from && x.to == to).Skip(start).Take(Helpers.Constants.MESSAGES_PER_PAGE).ToList();
+                var messages = _dbContext.Μessages.Where(x => x.from == from && x.to == to).Skip(start).Take(Helpers.Constants.MESSAGES_PER_PAGE).ToList();
+
+                return messages;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return new List<ChatMessage>();
+                throw new Exception(ex.Message);
             }
-            
+
+        }
+        public void Save()
+        {
+            _dbContext.SaveChangesAsync();
+        }
+        public void UpdateRecord(ChatMessage message)
+        {
+            _dbContext.Μessages.Where(x=>x.)
+        }
+        public List<ChatMessage> GetUnreadMessages(string to)
+        {
+            try
+            {
+                return _dbContext.Μessages.Where(x => x.to == to && x.unread == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

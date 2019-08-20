@@ -5,12 +5,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chathubAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MessagesController : ControllerBase
@@ -27,20 +29,47 @@ namespace chathubAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMessageHistory( string to, int currentPage = 1)
+        public async Task<IActionResult> GetMessageHistory(string to, int currentPage = 1)
         {
+            try
+            {
 
-             string from = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-           // string from = "asdf@asdf.gr";
-            to = GetUserIdFromEmail(to);
-            List<ChatMessage> fromTo = _messagesRepo.GetMessageHistory(from, to, currentPage);
-            List<ChatMessage> toFrom = _messagesRepo.GetMessageHistory(to, from, currentPage);
-            var messageHistory = fromTo.Concat(toFrom).ToList();
-            messageHistory.OrderBy(x => x.TimeStamp);
-            return Ok(messageHistory);
+                string from = GetUserEmailFromId(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                List<ChatMessage> fromTo = _messagesRepo.GetMessageHistory(from, to, currentPage);
+                List<ChatMessage> toFrom = _messagesRepo.GetMessageHistory(to, from, currentPage);
+                var messageHistory = fromTo.Concat(toFrom).ToList();
+                messageHistory = messageHistory.OrderBy(x => x.timeStamp).ToList();
+                foreach (var message in messageHistory)
+                {
+                    message.unread = false;
+                    _messagesRepo.Update();
+                }
+                return Ok(messageHistory);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
 
         }
+        [HttpGet("unread")]
+        public async Task<IActionResult> GetUnreadMessages()
+        {
+            try
+            {
+                string to = GetUserEmailFromId(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var messages = _messagesRepo.GetUnreadMessages(to);
 
+                return Ok(messages);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         private string GetUserIdFromEmail(string email)
         {
             return _userRepo.GetUserIdFromEmail(email);

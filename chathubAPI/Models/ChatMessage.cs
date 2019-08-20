@@ -14,6 +14,13 @@ namespace chathubAPI.Models
 
         public string to { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public DateTime timeStamp { get; set; }
+
+        public bool unread { get; set; }
+
+        public ChatMessage()
+        {
+            unread = false;
+        }
     }
 }

@@ -42,25 +42,33 @@ namespace chathubAPI.Hubs
             string to = GetUserIdFromEmail(message.to);
             string from = GetUserEmailFromId(userId);
             message.from = from;
-            message.TimeStamp = DateTime.UtcNow;
-            try
-            {
-                _messagesRepo.AddMessage(message);
-            }
-            catch (Exception ex)
-            {
-
-            }
+            message.timeStamp = DateTime.UtcNow;
+            message.unread = true;
             if (message.to != null)
             {
+
                 foreach (var connectionId in _connections.GetConnections(to))
                 {
                     await Clients.Client(connectionId).SendAsync("ReceiveMessage", message);
                 }
 
+                try
+                {
+                    _messagesRepo.AddMessage(message);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
 
+        public async void MarkMessageAsRead(ChatMessage message)
+        {
+            message.unread = false;
+            _messagesRepo.Save();
+            
+        }
         public void SendToAll(ChatMessage message)
         {
             Clients.All.SendAsync("sendToAll", message);
@@ -71,6 +79,7 @@ namespace chathubAPI.Hubs
 
             string userId = Context.UserIdentifier;
             _connections.Add(userId, Context.ConnectionId);
+            _messagesRepo.GetUnreadMessages(GetUserEmailFromId(userId));
             Clients.All.SendAsync("SendOnlineConnections", this.createConnectedList(_connections.GetKeys()));
             Clients.All.SendAsync("SendConnections", _userRepo.GetAllUsersEmails());
             this.SendToAll(new ChatMessage() { from = this.GetUserEmailFromId(userId), message = "hello" });

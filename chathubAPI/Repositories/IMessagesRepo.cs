@@ -11,5 +11,9 @@ namespace chathubAPI.Repositories
         List<ChatMessage> GetMessageHistory(string from,string to,int currentPage);
 
         void AddMessage(ChatMessage message);
+
+        void Save();
+
+        List<ChatMessage> GetUnreadMessages(string to);
     }
 }

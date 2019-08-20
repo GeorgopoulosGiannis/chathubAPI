@@ -27,7 +27,7 @@ namespace chathubAPI.DATA
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.from).IsRequired();
                 entity.Property(x => x.to).IsRequired();
-                entity.Property(x => x.TimeStamp).IsRequired();
+                entity.Property(x => x.timeStamp).IsRequired();
                 entity.Property(x => x.message).IsRequired();
             });
         }

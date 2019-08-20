@@ -7,6 +7,6 @@ namespace chathubAPI.Helpers
 {
     public static class Constants
     {
-        public const int MESSAGES_PER_PAGE = 20;
+        public const int MESSAGES_PER_PAGE = 50;
     }
 }
