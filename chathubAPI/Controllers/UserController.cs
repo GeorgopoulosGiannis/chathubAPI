@@ -28,7 +28,6 @@ namespace chathubAPI.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
-
         }
 
 

@@ -51,7 +51,7 @@ namespace chathubAPI.Repositories
         {
           var msg = _dbContext.Μessages.Where(x => x.Id == message.Id).FirstOrDefault();
             msg.unread = false;
-            _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
         public List<ChatMessage> GetUnreadMessages(string to)
         {

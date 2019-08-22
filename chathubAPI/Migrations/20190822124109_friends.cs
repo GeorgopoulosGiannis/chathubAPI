@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace chathubAPI.Migrations
 {
-    public partial class Initial : Migration
+    public partial class friends : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,11 +40,29 @@ namespace chathubAPI.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    from = table.Column<string>(nullable: false),
+                    message = table.Column<string>(nullable: false),
+                    to = table.Column<string>(nullable: false),
+                    timeStamp = table.Column<DateTime>(nullable: false),
+                    unread = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +171,38 @@ namespace chathubAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Relationships",
+                columns: table => new
+                {
+                    User_OneId = table.Column<string>(nullable: false),
+                    User_TwoId = table.Column<string>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Action_UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Relationships", x => new { x.User_OneId, x.User_TwoId });
+                    table.ForeignKey(
+                        name: "FK_Relationships_AspNetUsers_Action_UserId",
+                        column: x => x.Action_UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Relationships_AspNetUsers_User_OneId",
+                        column: x => x.User_OneId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Relationships_AspNetUsers_User_TwoId",
+                        column: x => x.User_TwoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +241,16 @@ namespace chathubAPI.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Relationships_Action_UserId",
+                table: "Relationships",
+                column: "Action_UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Relationships_User_TwoId",
+                table: "Relationships",
+                column: "User_TwoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -209,6 +269,12 @@ namespace chathubAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Relationships");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
