@@ -43,7 +43,7 @@ namespace chathubAPI.Controllers
                 foreach (var message in messageHistory)
                 {
                     message.unread = false;
-                    _messagesRepo.Update();
+                    _messagesRepo.UpdateRecord(message);
                 }
                 return Ok(messageHistory);
             }

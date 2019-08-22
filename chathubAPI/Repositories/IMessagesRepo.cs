@@ -15,5 +15,7 @@ namespace chathubAPI.Repositories
         void Save();
 
         List<ChatMessage> GetUnreadMessages(string to);
+
+        void UpdateRecord(ChatMessage message);
     }
 }

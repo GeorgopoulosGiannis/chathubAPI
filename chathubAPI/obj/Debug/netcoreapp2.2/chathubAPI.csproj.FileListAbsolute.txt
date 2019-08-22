@@ -26,3 +26,17 @@ C:\Users\GGA\Desktop\chatAPI\chathubAPI\chathubAPI\obj\Debug\netcoreapp2.2\chath
 C:\Users\GGA\Desktop\chatAPI\chathubAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.dll
 C:\Users\GGA\Desktop\chatAPI\chathubAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.pdb
 C:\Users\GGA\Desktop\chatAPI\chathubAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.csprojAssemblyReference.cache
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.csprojAssemblyReference.cache
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.csproj.CoreCompileInputs.cache
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorAssemblyInfo.cache
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorAssemblyInfo.cs
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.AssemblyInfoInputs.cache
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.AssemblyInfo.cs
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.dll
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.pdb
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.deps.json
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.runtimeconfig.json
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.runtimeconfig.dev.json
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.dll
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.pdb
+C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorTargetAssemblyInfo.cache

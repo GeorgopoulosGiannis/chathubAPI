@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI\\chathubAPI.csproj": {}
+    "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI\\chathubAPI.csproj": {
+    "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI\\chathubAPI.csproj",
+        "projectUniqueName": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj",
         "projectName": "chathubAPI",
-        "projectPath": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI\\chathubAPI.csproj",
+        "projectPath": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj",
         "packagesPath": "C:\\Users\\GGA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI\\obj\\",
+        "outputPath": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
