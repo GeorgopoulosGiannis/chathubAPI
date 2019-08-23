@@ -21,13 +21,11 @@ namespace chathubAPI.Controllers
     {
         readonly UserManager<IdentityUser> _userManager;
         readonly SignInManager<IdentityUser> _signInManager;
-        readonly ApplicationDbContext _dbContext;
 
         public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _dbContext = dbContext;
         }
 
 

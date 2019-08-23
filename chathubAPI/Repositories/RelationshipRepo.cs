@@ -17,23 +17,32 @@ namespace chathubAPI.Repositories
 
         public bool Add(Relationship rel)
         {
-            try
+            if (rel.User_OneId != rel.User_TwoId)
             {
-                _dbContext.Relationships.Add(rel);
-                _dbContext.SaveChanges();
-                return true;
+                try
+                {
+                    _dbContext.Relationships.Add(rel);
+                    _dbContext.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception(ex.Message);
+                return false;
             }
 
+
         }
-        public List<Relationship> GetRelationships(string userId,int status)
+        public List<Relationship> GetRelationships(string userId, int status)
         {
             try
             {
-              return  _dbContext.Relationships.Where(x => x.Status == status && (x.User_OneId == userId || x.User_TwoId == userId)).ToList();
+                return _dbContext.Relationships.Where(x => x.Status == status && (x.User_OneId == userId || x.User_TwoId == userId)).ToList();
             }
             catch (Exception ex)
             {
