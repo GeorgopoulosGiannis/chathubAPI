@@ -50,6 +50,7 @@ namespace chathubAPI
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IMessagesRepo, MessagesRepo>();
             services.AddScoped<IRelationshipRepo,RelationshipRepo>();
+            services.AddScoped<IProfileRepo, ProfileRepo>();
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
          .AddDefaultTokenProviders();

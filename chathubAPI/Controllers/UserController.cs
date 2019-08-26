@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using chathubAPI.DATA;
 using chathubAPI.Models;
+using chathubAPI.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,13 @@ namespace chathubAPI.Controllers
     {
         readonly UserManager<IdentityUser> _userManager;
         readonly SignInManager<IdentityUser> _signInManager;
+        readonly IProfileRepo _profileRepo;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext)
+        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext,IProfileRepo profileRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _profileRepo = profileRepo;
         }
 
 
@@ -35,8 +38,10 @@ namespace chathubAPI.Controllers
 
             try
             {
-                var user = new IdentityUser { UserName = credentials.Email, Email = credentials.Email };
+                var user = new User { UserName = credentials.Email, Email = credentials.Email };
+            
                 var result = await _userManager.CreateAsync(user, credentials.Password);
+                _profileRepo.Add(user.Id);
                 if (!result.Succeeded)
                     return Conflict(result.Errors);
 

@@ -44,11 +44,11 @@ namespace chathubAPI.Controllers
                     RelationshipDTO relDTO = new RelationshipDTO();
                     if (userId == rel.User_OneId)
                     {
-                        relDTO.Email = GetUserEmailFromId(rel.User_TwoId);
+                        relDTO.Email = _userRepo.GetUserEmailFromId(rel.User_TwoId);
                     }
                     else
                     {
-                        relDTO.Email = GetUserEmailFromId(rel.User_OneId);
+                        relDTO.Email = _userRepo.GetUserEmailFromId(rel.User_OneId);
                     }
                     relDTO.Status = rel.Status;
                     relsDTO.Add(relDTO);
@@ -76,7 +76,7 @@ namespace chathubAPI.Controllers
                 Relationship relationship = new Relationship
                 {
                     User_OneId = userId,
-                    User_TwoId = GetUserIdFromEmail(invitation.Email),
+                    User_TwoId = _userRepo.GetUserIdFromEmail(invitation.Email),
                     Action_UserId = userId,
                     Status = invitation.Status
                 };
@@ -104,7 +104,7 @@ namespace chathubAPI.Controllers
                 Relationship relationship = new Relationship
                 {
                     User_OneId = userId,
-                    User_TwoId = GetUserIdFromEmail(userTo),
+                    User_TwoId = _userRepo.GetUserIdFromEmail(userTo),
                     Action_UserId = userId,
                     Status = status
                 };
@@ -121,15 +121,6 @@ namespace chathubAPI.Controllers
             {
                 return BadRequest();
             }
-        }
-
-        private string GetUserIdFromEmail(string email)
-        {
-            return _userRepo.GetUserIdFromEmail(email);
-        }
-        private string GetUserEmailFromId(string userId)
-        {
-            return _userRepo.GetUserEmailFromId(userId);
         }
 
     }

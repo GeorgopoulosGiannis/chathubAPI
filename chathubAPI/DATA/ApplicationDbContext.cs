@@ -14,6 +14,8 @@ namespace chathubAPI.DATA
         public DbSet<ChatMessage> Μessages { get; set; }
 
         public DbSet<Relationship> Relationships { get; set; }
+
+        public DbSet<Profile> Profiles { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
@@ -49,6 +51,8 @@ namespace chathubAPI.DATA
                     .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
             });
+      
+         
         }
     }
 }

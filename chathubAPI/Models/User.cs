@@ -9,6 +9,5 @@ namespace chathubAPI.Models
     public class User : IdentityUser
     {
      
-
     }
 }

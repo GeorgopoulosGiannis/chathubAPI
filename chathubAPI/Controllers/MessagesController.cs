@@ -59,7 +59,7 @@ namespace chathubAPI.Controllers
         {
             try
             {
-                string to = GetUserEmailFromId(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                string to = _userRepo.GetUserEmailFromId(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 var messages = _messagesRepo.GetUnreadMessages(to);
 
                 return Ok(messages);
@@ -70,13 +70,6 @@ namespace chathubAPI.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        private string GetUserIdFromEmail(string email)
-        {
-            return _userRepo.GetUserIdFromEmail(email);
-        }
-        private string GetUserEmailFromId(string userId)
-        {
-            return _userRepo.GetUserEmailFromId(userId);
-        }
+   
     }
 }
