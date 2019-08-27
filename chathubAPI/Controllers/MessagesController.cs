@@ -34,7 +34,7 @@ namespace chathubAPI.Controllers
             try
             {
 
-                string from = GetUserEmailFromId(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                string from = _userRepo.GetUserEmailFromId(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
                 List<ChatMessage> fromTo = _messagesRepo.GetMessageHistory(from, to, currentPage);
                 List<ChatMessage> toFrom = _messagesRepo.GetMessageHistory(to, from, currentPage);

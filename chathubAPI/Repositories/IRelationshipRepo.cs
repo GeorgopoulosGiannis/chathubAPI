@@ -12,5 +12,6 @@ namespace chathubAPI.Repositories
         bool Add(Relationship rel);
         bool UpdateStatus(Relationship rel);
         bool Save();
+        List<Relationship> GetRelationshipsAllStatus(string userId);
     }
 }

@@ -10,9 +10,11 @@ namespace chathubAPI.Repositories
     public class RelationshipRepo : IRelationshipRepo
     {
         readonly ApplicationDbContext _dbContext;
+
         public RelationshipRepo(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+
         }
 
         public bool Add(Relationship rel)
@@ -29,7 +31,6 @@ namespace chathubAPI.Repositories
                 {
                     throw new Exception(ex.Message);
                 }
-
             }
             else
             {
@@ -42,7 +43,25 @@ namespace chathubAPI.Repositories
         {
             try
             {
+                List<Relationship> rels = new List<Relationship>();
+                if (status == 0)
+                {
+                    return _dbContext.Relationships.Where(x => x.Status == status && (x.User_OneId == userId || x.User_TwoId == userId) && x.Action_UserId != userId).ToList();
+                }
+
                 return _dbContext.Relationships.Where(x => x.Status == status && (x.User_OneId == userId || x.User_TwoId == userId)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public List<Relationship> GetRelationshipsAllStatus(string userId)
+        {
+            try
+            {
+                return _dbContext.Relationships.Where(x => (x.User_OneId == userId || x.User_TwoId == userId)).ToList();
             }
             catch (Exception ex)
             {
@@ -56,6 +75,10 @@ namespace chathubAPI.Repositories
             try
             {
                 var relationship = _dbContext.Relationships.Where(x => x.User_OneId == rel.User_OneId && x.User_TwoId == rel.User_TwoId).FirstOrDefault();
+                if (relationship == null)
+                {
+                    relationship = _dbContext.Relationships.Where(x => x.User_OneId == rel.User_TwoId && x.User_TwoId == rel.User_OneId).FirstOrDefault();
+                }
                 relationship.Status = rel.Status;
                 _dbContext.Relationships.Update(relationship);
                 _dbContext.SaveChanges();

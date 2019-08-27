@@ -41,7 +41,7 @@ namespace chathubAPI.Controllers
                 var user = new User { UserName = credentials.Email, Email = credentials.Email };
             
                 var result = await _userManager.CreateAsync(user, credentials.Password);
-                _profileRepo.Add(user.Id);
+                _profileRepo.Add(user);
                 if (!result.Succeeded)
                     return Conflict(result.Errors);
 

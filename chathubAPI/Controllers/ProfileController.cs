@@ -18,11 +18,13 @@ namespace chathubAPI.Controllers
     {
         readonly IProfileRepo _profileRepo;
         readonly IUserRepo _userRepo;
+        readonly IRelationshipRepo _relationshipRepo;
 
-        public ProfileController(IProfileRepo profileRepo, IUserRepo userRepo)
+        public ProfileController(IProfileRepo profileRepo, IUserRepo userRepo, IRelationshipRepo relationshipRepo)
         {
             _profileRepo = profileRepo;
             _userRepo = userRepo;
+            _relationshipRepo = relationshipRepo;
         }
 
         [HttpGet]
@@ -30,14 +32,25 @@ namespace chathubAPI.Controllers
         {
             if (email != null)
             {
+                string userId = _userRepo.GetUserIdFromEmail(email);
+                if (userId != null)
+                {
 
-                return Ok(_profileRepo.Get(_userRepo.GetUserIdFromEmail(email)));
-
+                    Profile profile = _profileRepo.Get(userId);
+                    ProfileDTO profDTO = new ProfileDTO
+                    {
+                        Alias = profile.Alias,
+                        Avatar = profile.Avatar,
+                        Description = profile.Description,
+                        Email = email
+                    };
+                    return Ok(profDTO);
+                }
             }
             return NotFound();
         }
 
-        [HttpPost]
+        [HttpPost("update")]
         public async Task<IActionResult> Update(ProfileDTO prof)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -47,13 +60,66 @@ namespace chathubAPI.Controllers
             oldProf.Description = prof.Description;
             if (_profileRepo.Update(oldProf))
             {
+                _profileRepo.Save();
                 return Ok();
+
             }
             else
             {
                 return BadRequest();
             }
+
+        }
+
+        [HttpGet("suggestions")]
+        public async Task<IActionResult> GetSuggestions(int currentPage = 1)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Profile> profs = _profileRepo.GetProfiles(userId, currentPage);
+            List<Profile> cloneProfs = profs.ToList();
+            List<Relationship> rels = _relationshipRepo.GetRelationshipsAllStatus(userId);
+            List<ProfileDTO> profsDTO = new List<ProfileDTO>();
+
+        
+
+                foreach (var prof in profs)
+                {
+                    foreach (var rel in rels)
+                    {
+                        if (prof.UserId == rel.User_OneId || prof.UserId == rel.User_TwoId)
+                        {
+                            cloneProfs.Remove(prof);
+                        }
+                    }
+
+                }
             
+            if (cloneProfs.Count < 20)
+            {
+                currentPage += 1;
+                List<Profile> newProfs = _profileRepo.GetProfiles(userId, currentPage);
+                while (profs.Count < 20 && newProfs.Count == 20)
+                {
+                    foreach (var prof in newProfs)
+                    {
+                        profs.Add(prof);
+                    }
+                }
+
+            }
+            foreach (var prof in cloneProfs)
+            {
+                profsDTO.Add(new ProfileDTO
+                {
+                    Email = _userRepo.GetUserEmailFromId(prof.UserId),
+                    Alias = prof.Alias,
+                    Description = prof.Description,
+                    Avatar = prof.Avatar
+                });
+
+            }
+
+            return Ok(profsDTO);
         }
     }
 }

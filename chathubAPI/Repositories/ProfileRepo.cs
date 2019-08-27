@@ -1,4 +1,5 @@
 ﻿using chathubAPI.DATA;
+using chathubAPI.Helpers;
 using chathubAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,9 +16,16 @@ namespace chathubAPI.Repositories
         {
             _dbContext = dbContext;
         }
-        public bool Add(string userId)
+        public bool Add(User user)
         {
-            Profile profile = new Profile { UserId = userId }; 
+            Profile profile = new Profile
+            {
+                UserId = user.Id,
+                Alias = user.Email.Split('@').First(),
+                User = user,
+                Avatar = "resources/images/facebook.jpeg",
+                Description = "No description yet.."
+            };
             try
             {
 
@@ -25,7 +33,7 @@ namespace chathubAPI.Repositories
                 _dbContext.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -35,9 +43,9 @@ namespace chathubAPI.Repositories
         {
             try
             {
-              return _dbContext.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
+                return _dbContext.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -55,10 +63,22 @@ namespace chathubAPI.Repositories
                 _dbContext.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<Profile> GetProfiles(string userId, int currentPage = 1)
+        {
+            int start = (currentPage - 1) * Constants.PROFILES_PER_PAGE;
+            return _dbContext.Profiles.Where(x => x.UserId != userId).Skip(start).Take(Constants.PROFILES_PER_PAGE).ToList();
+        }
+
+        public void Save()
+        {
+            _dbContext.SaveChangesAsync();
+        }
     }
 }
+

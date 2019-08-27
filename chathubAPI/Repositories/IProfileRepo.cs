@@ -8,10 +8,14 @@ namespace chathubAPI.Repositories
 {
     public interface IProfileRepo
     {
-        bool Add(string userId);
+        bool Add(User user);
 
         Profile Get(string userId);
 
         bool Update(Profile profile);
+
+        List<Profile> GetProfiles(string userId, int currentPage = 1);
+
+        void Save();
     }
 }

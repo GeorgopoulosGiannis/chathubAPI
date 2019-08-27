@@ -1,4 +1,5 @@
 ﻿
+using chathubAPI.DTO;
 using chathubAPI.Helpers;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
@@ -92,6 +93,7 @@ namespace chathubAPI.Hubs
             string userId = Context.UserIdentifier;
 
             _connections.Remove(userId, Context.ConnectionId);
+            Clients.All.SendAsync("SendOnlineConnections", this.createConnectedList(_connections.GetKeys()));
 
             return base.OnDisconnectedAsync(exception);
         }

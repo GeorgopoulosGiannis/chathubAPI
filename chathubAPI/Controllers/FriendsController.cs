@@ -4,12 +4,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using chathubAPI.DTO;
+using chathubAPI.Helpers;
+using chathubAPI.Hubs;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace chathubAPI.Controllers
 {
@@ -23,11 +26,14 @@ namespace chathubAPI.Controllers
         readonly UserManager<IdentityUser> _userManager;
         readonly IRelationshipRepo _relationshipRepo;
         readonly IUserRepo _userRepo;
-        public FriendsController(UserManager<IdentityUser> userManager, IRelationshipRepo relationshipRepo, IUserRepo userRepo)
+        readonly IHubContext<ChatHub> _hubContext;
+
+        public FriendsController(UserManager<IdentityUser> userManager, IRelationshipRepo relationshipRepo, IUserRepo userRepo, IHubContext<ChatHub> hubContext)
         {
             _userManager = userManager;
             _relationshipRepo = relationshipRepo;
             _userRepo = userRepo;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -38,7 +44,7 @@ namespace chathubAPI.Controllers
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 List<Relationship> rels = _relationshipRepo.GetRelationships(userId, status);
                 List<RelationshipDTO> relsDTO = new List<RelationshipDTO>();
-               
+
                 foreach (var rel in rels)
                 {
                     RelationshipDTO relDTO = new RelationshipDTO();
@@ -55,7 +61,6 @@ namespace chathubAPI.Controllers
                 }
 
                 return Ok(relsDTO);
-
             }
             else
             {
@@ -82,6 +87,7 @@ namespace chathubAPI.Controllers
                 };
                 if (_relationshipRepo.Add(relationship))
                 {
+
                     return Ok();
                 }
                 else
@@ -96,22 +102,22 @@ namespace chathubAPI.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateStatus([FromBody]string userTo, int status)
+        public async Task<IActionResult> UpdateStatus([FromBody]RelationshipDTO updateStatus)
         {
-            if (userTo != null && (status == 1 || status == 2))
+            if (updateStatus.Email != null && (updateStatus.Status == 1 || updateStatus.Status == 2))
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 Relationship relationship = new Relationship
                 {
                     User_OneId = userId,
-                    User_TwoId = _userRepo.GetUserIdFromEmail(userTo),
+                    User_TwoId = _userRepo.GetUserIdFromEmail(updateStatus.Email),
                     Action_UserId = userId,
-                    Status = status
+                    Status = updateStatus.Status
                 };
                 if (_relationshipRepo.UpdateStatus(relationship))
-                {
-                    return Ok(status);
-                }
+
+                    return Ok(updateStatus.Status);
+
                 else
                 {
                     return BadRequest();
