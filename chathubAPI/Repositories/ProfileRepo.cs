@@ -69,7 +69,7 @@ namespace chathubAPI.Repositories
             }
         }
 
-        public List<Profile> GetProfiles(string userId, int currentPage = 1)
+        public List<Profile> GetRandomProfiles(string userId, int currentPage = 1)
         {
             int start = (currentPage - 1) * Constants.PROFILES_PER_PAGE;
             return _dbContext.Profiles.Where(x => x.UserId != userId).Skip(start).Take(Constants.PROFILES_PER_PAGE).ToList();

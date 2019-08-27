@@ -27,13 +27,15 @@ namespace chathubAPI.Controllers
         readonly IRelationshipRepo _relationshipRepo;
         readonly IUserRepo _userRepo;
         readonly IHubContext<ChatHub> _hubContext;
+        readonly IProfileRepo _profileRepo;
 
-        public FriendsController(UserManager<IdentityUser> userManager, IRelationshipRepo relationshipRepo, IUserRepo userRepo, IHubContext<ChatHub> hubContext)
+        public FriendsController(UserManager<IdentityUser> userManager, IRelationshipRepo relationshipRepo, IUserRepo userRepo, IHubContext<ChatHub> hubContext, IProfileRepo profileRepo)
         {
             _userManager = userManager;
             _relationshipRepo = relationshipRepo;
             _userRepo = userRepo;
             _hubContext = hubContext;
+            _profileRepo = profileRepo;
         }
 
         [HttpGet]
@@ -43,24 +45,33 @@ namespace chathubAPI.Controllers
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 List<Relationship> rels = _relationshipRepo.GetRelationships(userId, status);
-                List<RelationshipDTO> relsDTO = new List<RelationshipDTO>();
+                List<ProfileDTO> profsDTO = new List<ProfileDTO>();
 
                 foreach (var rel in rels)
                 {
-                    RelationshipDTO relDTO = new RelationshipDTO();
+                    Profile prof = new Profile();
+                    ProfileDTO profDTO = new ProfileDTO();
                     if (userId == rel.User_OneId)
                     {
-                        relDTO.Email = _userRepo.GetUserEmailFromId(rel.User_TwoId);
+                        prof = _profileRepo.Get(rel.User_TwoId);
+                        profDTO.Alias = prof.Alias;
+                        profDTO.Avatar = prof.Avatar;
+                        profDTO.Email = _userRepo.GetUserEmailFromId(rel.User_TwoId);
+                        profDTO.Description = prof.Description;
+
                     }
                     else
                     {
-                        relDTO.Email = _userRepo.GetUserEmailFromId(rel.User_OneId);
+                        prof = _profileRepo.Get(rel.User_OneId);
+                        profDTO.Alias = prof.Alias;
+                        profDTO.Avatar = prof.Avatar;
+                        profDTO.Email = _userRepo.GetUserEmailFromId(rel.User_OneId);
+                        profDTO.Description = prof.Description;
                     }
-                    relDTO.Status = rel.Status;
-                    relsDTO.Add(relDTO);
+                    profsDTO.Add(profDTO);
                 }
 
-                return Ok(relsDTO);
+                return Ok(profsDTO);
             }
             else
             {

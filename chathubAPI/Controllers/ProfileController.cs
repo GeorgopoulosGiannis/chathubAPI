@@ -75,7 +75,7 @@ namespace chathubAPI.Controllers
         public async Task<IActionResult> GetSuggestions(int currentPage = 1)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            List<Profile> profs = _profileRepo.GetProfiles(userId, currentPage);
+            List<Profile> profs = _profileRepo.GetRandomProfiles(userId, currentPage);
             List<Profile> cloneProfs = profs.ToList();
             List<Relationship> rels = _relationshipRepo.GetRelationshipsAllStatus(userId);
             List<ProfileDTO> profsDTO = new List<ProfileDTO>();
@@ -97,7 +97,7 @@ namespace chathubAPI.Controllers
             if (cloneProfs.Count < 20)
             {
                 currentPage += 1;
-                List<Profile> newProfs = _profileRepo.GetProfiles(userId, currentPage);
+                List<Profile> newProfs = _profileRepo.GetRandomProfiles(userId, currentPage);
                 while (profs.Count < 20 && newProfs.Count == 20)
                 {
                     foreach (var prof in newProfs)

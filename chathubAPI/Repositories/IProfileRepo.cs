@@ -14,7 +14,7 @@ namespace chathubAPI.Repositories
 
         bool Update(Profile profile);
 
-        List<Profile> GetProfiles(string userId, int currentPage = 1);
+        List<Profile> GetRandomProfiles(string userId, int currentPage = 1);
 
         void Save();
     }
