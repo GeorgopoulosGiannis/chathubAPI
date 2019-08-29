@@ -21,15 +21,39 @@ namespace chathubAPI.Repositories
         {
             if (rel.User_OneId != rel.User_TwoId)
             {
-                try
+                if (FindRelationship(rel) == null)
                 {
-                    _dbContext.Relationships.Add(rel);
-                    _dbContext.SaveChanges();
-                    return true;
+                    try
+                    {
+                        _dbContext.Relationships.Add(rel);
+                        _dbContext.SaveChanges();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    return false;
+                    try
+                    {
+                        if (UpdateStatus(rel))
+                        {
+                            _dbContext.SaveChanges();
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+
+
                 }
             }
             else
@@ -97,6 +121,27 @@ namespace chathubAPI.Repositories
             {
                 _dbContext.SaveChanges();
                 return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Relationship FindRelationship(Relationship rel)
+        {
+            try
+            {
+                Relationship oldRel = _dbContext.Relationships.Where(x => x.User_OneId == rel.User_OneId && x.User_TwoId == rel.User_TwoId).FirstOrDefault();
+                if (oldRel != null)
+                {
+                    return oldRel;
+                }
+                else
+                {
+                    oldRel = _dbContext.Relationships.Where(x => x.User_OneId == rel.User_TwoId && x.User_TwoId == rel.User_OneId).FirstOrDefault();
+                    return oldRel;
+                }
             }
             catch (Exception ex)
             {
