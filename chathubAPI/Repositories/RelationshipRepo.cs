@@ -29,7 +29,7 @@ namespace chathubAPI.Repositories
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    return false;
                 }
             }
             else

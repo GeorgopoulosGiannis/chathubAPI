@@ -80,7 +80,7 @@ namespace chathubAPI.Hubs
 
             string userId = Context.UserIdentifier;
             _connections.Add(userId, Context.ConnectionId);
-            _messagesRepo.GetUnreadMessages(GetUserEmailFromId(userId));
+            //_messagesRepo.GetUnreadMessages(GetUserEmailFromId(userId));
             Clients.All.SendAsync("SendOnlineConnections", this.createConnectedList(_connections.GetKeys()));
             Clients.All.SendAsync("SendConnections", _userRepo.GetAllUsersEmails());
             this.SendToAll(new ChatMessage() { from = this.GetUserEmailFromId(userId), message = "hello" });
