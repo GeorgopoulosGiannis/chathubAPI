@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chathubAPI.DATA;
 
 namespace chathubAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190822124109_friends")]
+    partial class friends
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,21 +211,6 @@ namespace chathubAPI.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("chathubAPI.Models.Profile", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("Alias");
-
-                    b.Property<string>("Avatar");
-
-                    b.Property<string>("Description");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Profiles");
-                });
-
             modelBuilder.Entity("chathubAPI.Models.Relationship", b =>
                 {
                     b.Property<string>("User_OneId");
@@ -290,14 +277,6 @@ namespace chathubAPI.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("chathubAPI.Models.Profile", b =>
-                {
-                    b.HasOne("chathubAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

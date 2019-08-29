@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chathubAPI.DATA;
 
 namespace chathubAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190826104916_Profiles")]
+    partial class Profiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,8 +67,7 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
 
@@ -211,7 +212,8 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("chathubAPI.Models.Profile", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Alias");
 
@@ -295,14 +297,6 @@ namespace chathubAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("chathubAPI.Models.Profile", b =>
-                {
-                    b.HasOne("chathubAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("chathubAPI.Models.Relationship", b =>
                 {
                     b.HasOne("chathubAPI.Models.User", "Action_User")
@@ -318,6 +312,14 @@ namespace chathubAPI.Migrations
                         .WithMany()
                         .HasForeignKey("User_TwoId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.User", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Profile", "Profile")
+                        .WithOne("User")
+                        .HasForeignKey("chathubAPI.Models.User", "Id")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

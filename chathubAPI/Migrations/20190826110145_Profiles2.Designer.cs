@@ -10,8 +10,8 @@ using chathubAPI.DATA;
 namespace chathubAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190805093957_Initial")]
-    partial class Initial
+    [Migration("20190826110145_Profiles2")]
+    partial class Profiles2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,13 +67,15 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -114,6 +116,8 @@ namespace chathubAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -182,6 +186,72 @@ namespace chathubAPI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("from")
+                        .IsRequired();
+
+                    b.Property<string>("message")
+                        .IsRequired();
+
+                    b.Property<DateTime>("timeStamp");
+
+                    b.Property<string>("to")
+                        .IsRequired();
+
+                    b.Property<bool>("unread");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.Profile", b =>
+                {
+                    b.Property<string>("UserId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Alias");
+
+                    b.Property<string>("Avatar");
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.Relationship", b =>
+                {
+                    b.Property<string>("User_OneId");
+
+                    b.Property<string>("User_TwoId");
+
+                    b.Property<string>("Action_UserId");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("User_OneId", "User_TwoId");
+
+                    b.HasIndex("Action_UserId");
+
+                    b.HasIndex("User_TwoId");
+
+                    b.ToTable("Relationships");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -224,6 +294,31 @@ namespace chathubAPI.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.Relationship", b =>
+                {
+                    b.HasOne("chathubAPI.Models.User", "Action_User")
+                        .WithMany()
+                        .HasForeignKey("Action_UserId");
+
+                    b.HasOne("chathubAPI.Models.User", "User_One")
+                        .WithMany()
+                        .HasForeignKey("User_OneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("chathubAPI.Models.User", "User_Two")
+                        .WithMany()
+                        .HasForeignKey("User_TwoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.User", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Profile", "Profile")
+                        .WithOne("User")
+                        .HasForeignKey("chathubAPI.Models.User", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

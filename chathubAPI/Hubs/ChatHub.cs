@@ -1,4 +1,5 @@
 ﻿
+using chathubAPI.DTO;
 using chathubAPI.Helpers;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
@@ -28,9 +29,11 @@ namespace chathubAPI.Hubs
         private readonly static ConnectionMapping<string> _connections =
                new ConnectionMapping<string>();
         private readonly IUserRepo _userRepo;
-        public ChatHub(IUserRepo userRepo)
+        private readonly IMessagesRepo _messagesRepo;
+        public ChatHub(IUserRepo userRepo, IMessagesRepo messagesRepo)
         {
             _userRepo = userRepo;
+            _messagesRepo = messagesRepo;
         }
 
         public async void SendPrivateMessage(ChatMessage message)
@@ -40,16 +43,33 @@ namespace chathubAPI.Hubs
             string to = GetUserIdFromEmail(message.to);
             string from = GetUserEmailFromId(userId);
             message.from = from;
+            message.timeStamp = DateTime.UtcNow;
+            message.unread = true;
             if (message.to != null)
             {
+
                 foreach (var connectionId in _connections.GetConnections(to))
                 {
                     await Clients.Client(connectionId).SendAsync("ReceiveMessage", message);
                 }
 
+                try
+                {
+                    _messagesRepo.AddMessage(message);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
 
+        public async void MarkMessageAsRead(ChatMessage message)
+        {
+            message.unread = false;
+            _messagesRepo.Save();
+            
+        }
         public void SendToAll(ChatMessage message)
         {
             Clients.All.SendAsync("sendToAll", message);
@@ -60,7 +80,7 @@ namespace chathubAPI.Hubs
 
             string userId = Context.UserIdentifier;
             _connections.Add(userId, Context.ConnectionId);
-
+            //_messagesRepo.GetUnreadMessages(GetUserEmailFromId(userId));
             Clients.All.SendAsync("SendOnlineConnections", this.createConnectedList(_connections.GetKeys()));
             Clients.All.SendAsync("SendConnections", _userRepo.GetAllUsersEmails());
             this.SendToAll(new ChatMessage() { from = this.GetUserEmailFromId(userId), message = "hello" });
@@ -73,6 +93,7 @@ namespace chathubAPI.Hubs
             string userId = Context.UserIdentifier;
 
             _connections.Remove(userId, Context.ConnectionId);
+            Clients.All.SendAsync("SendOnlineConnections", this.createConnectedList(_connections.GetKeys()));
 
             return base.OnDisconnectedAsync(exception);
         }
@@ -90,7 +111,7 @@ namespace chathubAPI.Hubs
             List<string> list = new List<string>();
             foreach (var key in keys)
             {
-               list.Add(GetUserEmailFromId(key));
+                list.Add(GetUserEmailFromId(key));
             }
             return list;
         }
