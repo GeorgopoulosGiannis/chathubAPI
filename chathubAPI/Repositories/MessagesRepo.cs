@@ -49,7 +49,7 @@ namespace chathubAPI.Repositories
         }
         public void UpdateRecord(ChatMessage message)
         {
-          var msg = _dbContext.Μessages.Where(x => x.Id == message.Id).FirstOrDefault();
+            var msg = _dbContext.Μessages.Where(x => x.Id == message.Id).FirstOrDefault();
             msg.unread = false;
             _dbContext.SaveChanges();
         }
@@ -58,6 +58,18 @@ namespace chathubAPI.Repositories
             try
             {
                 return _dbContext.Μessages.Where(x => x.to == to && x.unread == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ChatMessage FindMessage(ChatMessage message)
+        {
+            try
+            {
+                return _dbContext.Μessages.Where(x => x.from == message.from && x.to == message.to && x.timeStamp == message.timeStamp).FirstOrDefault();
             }
             catch (Exception ex)
             {

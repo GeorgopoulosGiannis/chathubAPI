@@ -17,5 +17,7 @@ namespace chathubAPI.Repositories
         List<ChatMessage> GetUnreadMessages(string to);
 
         void UpdateRecord(ChatMessage message);
+
+        ChatMessage FindMessage(ChatMessage message);
     }
 }

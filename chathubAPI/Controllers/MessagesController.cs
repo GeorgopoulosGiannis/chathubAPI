@@ -70,6 +70,27 @@ namespace chathubAPI.Controllers
                 throw new Exception(ex.Message);
             }
         }
-   
+
+        [HttpPost("confirm")]
+        public async Task<IActionResult> Read(ChatMessage message)
+        {
+            try
+            {
+                ChatMessage msg = _messagesRepo.FindMessage(message);
+                if (msg != null)
+                {
+                    msg.unread = false;
+                    _messagesRepo.UpdateRecord(msg);
+                    _messagesRepo.Save();
+
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
