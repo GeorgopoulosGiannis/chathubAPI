@@ -22,6 +22,9 @@
 
   <ItemGroup>
     <Folder Include="Resources\Images\" />
+    <Content Include="Resources\*">
+      <CopyToPublishDirectory>always</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
