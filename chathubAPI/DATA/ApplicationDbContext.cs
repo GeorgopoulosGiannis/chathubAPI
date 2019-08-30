@@ -16,6 +16,10 @@ namespace chathubAPI.DATA
         public DbSet<Relationship> Relationships { get; set; }
 
         public DbSet<Profile> Profiles { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public DbSet<LikedImage> LikedImages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
@@ -51,8 +55,33 @@ namespace chathubAPI.DATA
                     .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
             });
-      
-         
+
+            builder.Entity<Image>(entity =>
+            {
+                entity.ToTable("Images");
+                entity.HasOne(x => x.Profile)
+                .WithMany(x => x.Images)
+                .HasForeignKey(x => x.ProfileId)
+                .IsRequired();
+
+                entity.Property(x => x.Path)
+                .IsRequired();
+            });
+
+            builder.Entity<LikedImage>(entity =>
+            {
+                entity.HasKey(x => new { x.ImageId, x.LikedById });
+
+                entity.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.LikedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(x => x.Image)
+                .WithMany()
+                .HasForeignKey(x => x.ImageId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

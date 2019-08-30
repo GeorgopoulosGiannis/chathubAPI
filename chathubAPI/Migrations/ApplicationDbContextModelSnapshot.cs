@@ -209,6 +209,46 @@ namespace chathubAPI.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedById");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<string>("Path")
+                        .IsRequired();
+
+                    b.Property<string>("ProfileId")
+                        .IsRequired();
+
+                    b.Property<string>("UpdatedById");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.LikedImage", b =>
+                {
+                    b.Property<int>("ImageId");
+
+                    b.Property<string>("LikedById");
+
+                    b.HasKey("ImageId", "LikedById");
+
+                    b.HasIndex("LikedById");
+
+                    b.ToTable("LikedImages");
+                });
+
             modelBuilder.Entity("chathubAPI.Models.Profile", b =>
                 {
                     b.Property<string>("UserId");
@@ -293,6 +333,27 @@ namespace chathubAPI.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.Image", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Profile", "Profile")
+                        .WithMany("Images")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.LikedImage", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("chathubAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("LikedById")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("chathubAPI.Models.Profile", b =>
