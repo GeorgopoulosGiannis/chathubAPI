@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chathubAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LikeController : ControllerBase
@@ -24,8 +26,10 @@ namespace chathubAPI.Controllers
         }
 
         [HttpPost("like")]
-        public async Task<IActionResult> LikeImage(int imageId)
+        public async Task<IActionResult> LikeImage([FromBody]int imageId)
         {
+
+
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (_likeImageRepo.LikeImage(imageId, userId))
             {
@@ -34,8 +38,9 @@ namespace chathubAPI.Controllers
             }
             else
             {
-                return NoContent();
+                return BadRequest();
             }
+
 
         }
 
@@ -44,15 +49,17 @@ namespace chathubAPI.Controllers
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             LikedImage img = _likeImageRepo.CheckIfLiked(imageId, userId);
-            if(_likeImageRepo.DeleteLikeImage(img)){
+            if (_likeImageRepo.DeleteLikeImage(img))
+            {
                 return Ok();
             }
             else
             {
                 return NoContent();
             }
-        
+
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetImageLikes(int imageId)
         {

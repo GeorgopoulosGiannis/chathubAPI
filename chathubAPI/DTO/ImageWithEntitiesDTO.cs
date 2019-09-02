@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace chathubAPI.DTO
 {
-    public class ImageDTO
+    public class ImageWithEntitiesDTO
     {
-        public string Email { get; set; }
+        public int Id { get; set; }
 
         public string Path { get; set; }
+
+        public int LikesCount { get; set; }
     }
 }

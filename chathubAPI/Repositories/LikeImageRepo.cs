@@ -22,14 +22,22 @@ namespace chathubAPI.Repositories
             {
                 try
                 {
-                    LikedImage likedImage = new LikedImage
+                    if(CheckIfLiked(imageId,userId) == null)
                     {
-                        ImageId = imageId,
-                        LikedById = userId
-                    };
-                    _dbContext.LikedImages.AddAsync(likedImage);
-                    _dbContext.SaveChangesAsync();
-                    return true;
+                        LikedImage likedImage = new LikedImage
+                        {
+                            ImageId = imageId,
+                            LikedById = userId
+                        };
+
+                        _dbContext.LikedImages.AddAsync(likedImage);
+                        _dbContext.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 catch (Exception ex)
                 {
