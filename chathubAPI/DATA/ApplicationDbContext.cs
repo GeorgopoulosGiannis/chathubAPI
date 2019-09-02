@@ -19,6 +19,8 @@ namespace chathubAPI.DATA
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<ImageComment> ImageComments { get; set; }
         public DbSet<LikedImage> LikedImages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
@@ -80,6 +82,21 @@ namespace chathubAPI.DATA
                 entity.HasOne(x => x.Image)
                 .WithMany()
                 .HasForeignKey(x => x.ImageId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<ImageComment>(entity =>
+            {
+                entity.HasKey(x => new { x.CommentId, x.ImageId });
+
+                entity.HasOne(x => x.Image)
+                .WithMany()
+                .HasForeignKey(x => x.ImageId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(x => x.Comment)
+                .WithMany()
+                .HasForeignKey(x => x.CommentId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
         }

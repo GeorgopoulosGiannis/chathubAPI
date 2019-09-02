@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chathubAPI.DATA;
 
 namespace chathubAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190902132151_Comments")]
+    partial class Comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,11 +267,11 @@ namespace chathubAPI.Migrations
                 {
                     b.Property<int>("CommentId");
 
-                    b.Property<int>("ImageId");
+                    b.Property<string>("CommentById");
 
-                    b.HasKey("CommentId", "ImageId");
+                    b.HasKey("CommentId", "CommentById");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("CommentById");
 
                     b.ToTable("ImageComments");
                 });
@@ -390,14 +392,14 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("chathubAPI.Models.ImageComment", b =>
                 {
+                    b.HasOne("chathubAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("CommentById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("chathubAPI.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("chathubAPI.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
