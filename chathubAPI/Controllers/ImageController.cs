@@ -7,11 +7,13 @@ using chathubAPI.DATA;
 using chathubAPI.DTO;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chathubAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ImageController : ControllerBase
@@ -26,6 +28,8 @@ namespace chathubAPI.Controllers
             _likeImageRepo = likeImageRepo;
         }
 
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetProfileImages(string email)
         {

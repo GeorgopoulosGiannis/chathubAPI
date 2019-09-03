@@ -24,7 +24,7 @@ namespace chathubAPI.Controllers
         readonly SignInManager<IdentityUser> _signInManager;
         readonly IProfileRepo _profileRepo;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext,IProfileRepo profileRepo)
+        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext, IProfileRepo profileRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,20 +39,17 @@ namespace chathubAPI.Controllers
             try
             {
                 var user = new User { UserName = credentials.Email, Email = credentials.Email };
-            
+
                 var result = await _userManager.CreateAsync(user, credentials.Password);
                 _profileRepo.Add(user);
                 if (!result.Succeeded)
                     return Conflict(result.Errors);
-
-
                 return Ok(CreateToken(user));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Ok(ex);
             }
-     
         }
 
 

@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using chathubAPI.DTO;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chathubAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
@@ -27,6 +29,7 @@ namespace chathubAPI.Controllers
             _relationshipRepo = relationshipRepo;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get(string email)
         {
