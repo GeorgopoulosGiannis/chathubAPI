@@ -64,7 +64,14 @@ namespace chathubAPI.Controllers
         public async Task<IActionResult> GetImageLikes(int imageId)
         {
             int likes = _likeImageRepo.CountImageLikes(imageId);
-            return Ok(likes);
+            if(likes > 0)
+            {
+                return Ok(likes);
+            }
+            else
+            {
+                return NoContent();
+            }
         }
     }
 }

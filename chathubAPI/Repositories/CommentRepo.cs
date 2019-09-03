@@ -16,7 +16,7 @@ namespace chathubAPI.Repositories
             _dbContext = dbContext;
         }
 
-        public bool Add(string content, string profileId)
+        public int Add(string content, string profileId)
         {
             if (content != null && profileId != null)
             {
@@ -31,9 +31,9 @@ namespace chathubAPI.Repositories
                         ProfileId = profileId,
                         UpdatedById = profileId
                     };
-                    _dbContext.Comments.AddAsync(comment);
-                    _dbContext.SaveChangesAsync();
-                    return true;
+                    _dbContext.Comments.Add(comment);
+                    _dbContext.SaveChanges();
+                    return comment.Id;
                 }
                 catch (Exception ex)
                 {
@@ -42,7 +42,7 @@ namespace chathubAPI.Repositories
             }
             else
             {
-                return false;
+                return 0;
             }
         }
 

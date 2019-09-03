@@ -1,5 +1,6 @@
 ﻿using chathubAPI.DATA;
 using chathubAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,8 @@ namespace chathubAPI.Repositories
                         CommentId = commentId,
                         ImageId = imageId,
                     };
-                    _dbContext.ImageComments.AddAsync(imageComment);
-                    _dbContext.SaveChangesAsync();
+                    _dbContext.ImageComments.Add(imageComment);
+                    _dbContext.SaveChanges();
                     return true;
                 }
                 catch(Exception ex)
@@ -57,7 +58,11 @@ namespace chathubAPI.Repositories
         {
             try
             {
-                List<ImageComment> imageComments = _dbContext.ImageComments.Where(x => x.ImageId == imageId).ToList();
+                List<ImageComment> imageComments = _dbContext.ImageComments.Where(x => x.ImageId == imageId)
+                                                                            .Include(x=>x.Comment)
+                                                                            .ThenInclude(x=>x.Profile)
+                                                                            .ThenInclude(x=>x.User)
+                                                                            .ToList();
                 return imageComments;
             }
             catch(Exception ex)
