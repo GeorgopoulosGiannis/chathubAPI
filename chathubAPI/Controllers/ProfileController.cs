@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using chathubAPI.DTO;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +51,7 @@ namespace chathubAPI.Controllers
             return NotFound();
         }
 
+        [Authorize]
         [HttpPost("update")]
         public async Task<IActionResult> Update(ProfileDTO prof)
         {
@@ -71,6 +73,7 @@ namespace chathubAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("suggestions")]
         public async Task<IActionResult> GetSuggestions(int currentPage = 1)
         {

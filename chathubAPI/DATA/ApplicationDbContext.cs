@@ -22,6 +22,7 @@ namespace chathubAPI.DATA
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ImageComment> ImageComments { get; set; }
         public DbSet<LikedImage> LikedImages { get; set; }
+        public DbSet<FcmToken> FcmTokens { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
@@ -84,7 +85,14 @@ namespace chathubAPI.DATA
                 .HasForeignKey(x => x.ImageId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
-
+            builder.Entity<FcmToken>(entity =>
+            {
+                entity.HasKey(x => x.Token);
+                entity.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.TokenOwner)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
             builder.Entity<ImageComment>(entity =>
             {
                 entity.HasKey(x => new { x.CommentId, x.ImageId });

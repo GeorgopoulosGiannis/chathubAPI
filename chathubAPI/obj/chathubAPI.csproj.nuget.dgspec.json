@@ -41,7 +41,15 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[1.9.1, )"
+            },
             "Microsoft.AspNet.SignalR": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "Microsoft.AspNet.SignalR.Core": {
               "target": "Package",
               "version": "[2.4.1, )"
             },

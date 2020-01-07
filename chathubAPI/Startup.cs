@@ -6,7 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using chathubAPI.DATA;
 using chathubAPI.Hubs;
+using chathubAPI.INTERFACES;
 using chathubAPI.Repositories;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +45,7 @@ namespace chathubAPI
             services.AddCors(options => options.AddPolicy("Cors",
             builder =>
             {
-                builder.WithOrigins("https://georgopoulosioannis.github.io/", "http://localhost:4200")
+                builder.WithOrigins("https://georgopoulosioannis.github.io/", "http://localhost:4200", "http://localhost:8081")
                        .AllowAnyMethod()
                        .AllowAnyHeader()
                        .AllowCredentials();
@@ -52,16 +56,17 @@ namespace chathubAPI
             opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IMessagesRepo, MessagesRepo>();
-            services.AddScoped<IRelationshipRepo,RelationshipRepo>();
+            services.AddScoped<IRelationshipRepo, RelationshipRepo>();
             services.AddScoped<IProfileRepo, ProfileRepo>();
             services.AddScoped<IImageRepo, ImageRepo>();
             services.AddScoped<ILikeImageRepo, LikeImageRepo>();
             services.AddScoped<ICommentRepo, CommentRepo>();
             services.AddScoped<IImageCommentRepo, ImageCommentRepo>();
+            services.AddScoped<IFcmTokenRepo, FcmTokenRepo>();
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
-         .AddDefaultTokenProviders();
-           var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("secrets").GetSection("secretPhrase").Value));
+            .AddDefaultTokenProviders();
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("secrets").GetSection("secretPhrase").Value));
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -98,6 +103,12 @@ namespace chathubAPI
                     }
                 };
             });
+          
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile("C:\\Users\\asdf\\Downloads\\rn-social-network-firebase-adminsdk-mdaw2-56b274fb27.json")
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -124,7 +135,6 @@ namespace chathubAPI
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseCors("Cors");
-
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("/chat");

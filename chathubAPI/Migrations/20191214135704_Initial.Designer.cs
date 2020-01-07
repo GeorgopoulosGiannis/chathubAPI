@@ -10,8 +10,8 @@ using chathubAPI.DATA;
 namespace chathubAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190830112402_Entities")]
-    partial class Entities
+    [Migration("20191214135704_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -211,6 +211,31 @@ namespace chathubAPI.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("CreatedById");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<string>("ProfileId");
+
+                    b.Property<string>("UpdatedById");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("chathubAPI.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -236,6 +261,19 @@ namespace chathubAPI.Migrations
                     b.HasIndex("ProfileId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.ImageComment", b =>
+                {
+                    b.Property<int>("CommentId");
+
+                    b.Property<int>("ImageId");
+
+                    b.HasKey("CommentId", "ImageId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("ImageComments");
                 });
 
             modelBuilder.Entity("chathubAPI.Models.LikedImage", b =>
@@ -337,12 +375,32 @@ namespace chathubAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.Comment", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId");
+                });
+
             modelBuilder.Entity("chathubAPI.Models.Image", b =>
                 {
                     b.HasOne("chathubAPI.Models.Profile", "Profile")
                         .WithMany("Images")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.ImageComment", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("chathubAPI.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("chathubAPI.Models.LikedImage", b =>

@@ -40,3 +40,21 @@ C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.dll
 C:\Users\GGA\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.pdb
 C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorTargetAssemblyInfo.cache
 C:\Users\GGA\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.csprojAssemblyReference.cache
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.deps.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.runtimeconfig.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.runtimeconfig.dev.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.dll
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\chathubAPI.pdb
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.csprojAssemblyReference.cache
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorAssemblyInfo.cache
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorAssemblyInfo.cs
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.AssemblyInfoInputs.cache
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.AssemblyInfo.cs
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.RazorTargetAssemblyInfo.cache
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.dll
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\obj\Debug\netcoreapp2.2\chathubAPI.pdb
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\Connected Services\AzureStorage1\ConnectedService.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\libman.json
+C:\Users\asdf\Desktop\chatAPI\chathubAPI\bin\Debug\netcoreapp2.2\Properties\launchSettings.json

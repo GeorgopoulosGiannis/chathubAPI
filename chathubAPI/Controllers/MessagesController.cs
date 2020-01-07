@@ -39,7 +39,7 @@ namespace chathubAPI.Controllers
                 List<ChatMessage> fromTo = _messagesRepo.GetMessageHistory(from, to, currentPage);
                 List<ChatMessage> toFrom = _messagesRepo.GetMessageHistory(to, from, currentPage);
                 var messageHistory = fromTo.Concat(toFrom).ToList();
-                messageHistory = messageHistory.OrderBy(x => x.timeStamp).ToList();
+                messageHistory = messageHistory.OrderByDescending(x => x.timeStamp).ToList();
                 foreach (var message in messageHistory)
                 {
                     message.unread = false;
@@ -54,6 +54,7 @@ namespace chathubAPI.Controllers
 
 
         }
+
         [HttpGet("unread")]
         public async Task<IActionResult> GetUnreadMessages()
         {

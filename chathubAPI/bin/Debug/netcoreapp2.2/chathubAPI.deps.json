@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "e033f6a5b6825b32972fa21e49b5a61560299aad"
+    "signature": ""
   },
   "compilationOptions": {
     "defines": [
@@ -10,7 +10,7 @@
       "NETCOREAPP",
       "NETCOREAPP2_2"
     ],
-    "languageVersion": "",
+    "languageVersion": "7.3",
     "platform": "",
     "allowUnsafe": false,
     "warningsAsErrors": false,
@@ -24,7 +24,9 @@
     ".NETCoreApp,Version=v2.2": {
       "chathubAPI/1.0.0": {
         "dependencies": {
+          "FirebaseAdmin": "1.9.1",
           "Microsoft.AspNet.SignalR": "2.4.1",
+          "Microsoft.AspNet.SignalR.Core": "2.4.1",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.Azure.SignalR": "1.1.0-preview1-10442",
@@ -38,6 +40,102 @@
         },
         "compile": {
           "chathubAPI.dll": {}
+        }
+      },
+      "FirebaseAdmin/1.9.1": {
+        "dependencies": {
+          "Google.Api.Gax": "2.7.0",
+          "Google.Api.Gax.Rest": "2.7.0",
+          "Google.Apis.Auth": "1.40.0",
+          "System.Collections.Immutable": "1.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FirebaseAdmin.dll": {
+            "assemblyVersion": "1.9.1.0",
+            "fileVersion": "1.9.1.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/FirebaseAdmin.dll": {}
+        }
+      },
+      "Google.Api.Gax/2.7.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "System.Interactive.Async": "3.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Api.Gax.dll": {
+            "assemblyVersion": "2.7.0.0",
+            "fileVersion": "2.7.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Api.Gax.dll": {}
+        }
+      },
+      "Google.Api.Gax.Rest/2.7.0": {
+        "dependencies": {
+          "Google.Api.Gax": "2.7.0",
+          "Google.Apis.Auth": "1.40.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Api.Gax.Rest.dll": {
+            "assemblyVersion": "2.7.0.0",
+            "fileVersion": "2.7.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Api.Gax.Rest.dll": {}
+        }
+      },
+      "Google.Apis/1.40.0": {
+        "dependencies": {
+          "Google.Apis.Core": "1.40.0",
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.dll": {
+            "assemblyVersion": "1.40.0.0",
+            "fileVersion": "1.40.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.dll": {}
+        }
+      },
+      "Google.Apis.Auth/1.40.0": {
+        "dependencies": {
+          "Google.Apis": "1.40.0",
+          "Google.Apis.Core": "1.40.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {
+            "assemblyVersion": "1.40.0.0",
+            "fileVersion": "1.40.0.0"
+          },
+          "lib/netstandard2.0/Google.Apis.Auth.dll": {
+            "assemblyVersion": "1.40.0.0",
+            "fileVersion": "1.40.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {},
+          "lib/netstandard2.0/Google.Apis.Auth.dll": {}
+        }
+      },
+      "Google.Apis.Core/1.40.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {
+            "assemblyVersion": "1.40.0.0",
+            "fileVersion": "1.40.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {}
         }
       },
       "MessagePack/1.7.3.4": {
@@ -59,6 +157,17 @@
         }
       },
       "Microsoft.AspNet.SignalR/2.4.1": {},
+      "Microsoft.AspNet.SignalR.Core/2.4.1": {
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {
+            "assemblyVersion": "2.4.1.0",
+            "fileVersion": "2.4.1.19093"
+          }
+        },
+        "compile": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Http.Connections.Client/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Common": "1.1.0",
@@ -3701,6 +3810,48 @@
       "serviceable": false,
       "sha512": ""
     },
+    "FirebaseAdmin/1.9.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dOakSKt3mr8lP51QxjZ7GNh4ArcG7srwYxuOvCd59KIBKvCOaKYxTp0LsSckB2QyCPuC0ASwy3XDyCjUqwLFLg==",
+      "path": "firebaseadmin/1.9.1",
+      "hashPath": "firebaseadmin.1.9.1.nupkg.sha512"
+    },
+    "Google.Api.Gax/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HDZFdXYrAUukdQnF3gMl9oAazq1oHWlbbNoLJ7aYIJFPlznmbsUE+VD+tn5S/4qYJat7jUNrraUOX4meoTE4Qw==",
+      "path": "google.api.gax/2.7.0",
+      "hashPath": "google.api.gax.2.7.0.nupkg.sha512"
+    },
+    "Google.Api.Gax.Rest/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KtJKFJ40BzmceVwB/MyhtjAq3Y9+9Wxbe9Vlp050x4NAfP6zapcrhSDbeHV6pY/KoHIGvOI7wkgql543X/LZNg==",
+      "path": "google.api.gax.rest/2.7.0",
+      "hashPath": "google.api.gax.rest.2.7.0.nupkg.sha512"
+    },
+    "Google.Apis/1.40.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+5wjbYtte08ZZlJKyxfRiMAf27aqSTnvBjE3Tf31uyRqS5AVqsLw6ss4qi/51x+ZFT+wiZRsfWPlLY8uAeTF9A==",
+      "path": "google.apis/1.40.0",
+      "hashPath": "google.apis.1.40.0.nupkg.sha512"
+    },
+    "Google.Apis.Auth/1.40.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-P1l8gncejwYDdGa2ycMgq7/P3Gb441Jls/7jaxiOUlHWj0ImDzS0iJbR3g1tbLxyAKYfqJ3t5Vu921S32l0MjA==",
+      "path": "google.apis.auth/1.40.0",
+      "hashPath": "google.apis.auth.1.40.0.nupkg.sha512"
+    },
+    "Google.Apis.Core/1.40.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ys3ENDOBtB9brBx72aR4B3c9kfwUkisB1CSmcs4XHDpyOIXtdeAXcpAEz1hzDdM5+6jdND7d4eSVtg7B9wksYw==",
+      "path": "google.apis.core/1.40.0",
+      "hashPath": "google.apis.core.1.40.0.nupkg.sha512"
+    },
     "MessagePack/1.7.3.4": {
       "type": "package",
       "serviceable": true,
@@ -3714,6 +3865,13 @@
       "sha512": "sha512-aYbLVE5toZwv/qaQ0BiIZRRwN/00WKYzGjaYUWIQuI91xZ50nnAymWD1sxCZFN9XXDRq8bevM5ET9GmAeOI/Nw==",
       "path": "microsoft.aspnet.signalr/2.4.1",
       "hashPath": "microsoft.aspnet.signalr.2.4.1.nupkg.sha512"
+    },
+    "Microsoft.AspNet.SignalR.Core/2.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-da5vF7ERsXAfFz2RzyXIV2VZACxsw+NxWwKtwXuHde7xuApvI/njJhpzq+LkoYpOYfzPZ8BbccaZ1yOaw1AQ4w==",
+      "path": "microsoft.aspnet.signalr.core/2.4.1",
+      "hashPath": "microsoft.aspnet.signalr.core.2.4.1.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Http.Connections.Client/1.0.0": {
       "type": "package",

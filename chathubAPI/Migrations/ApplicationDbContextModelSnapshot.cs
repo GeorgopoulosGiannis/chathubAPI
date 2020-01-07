@@ -234,6 +234,20 @@ namespace chathubAPI.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.FcmToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("TokenOwner");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("TokenOwner");
+
+                    b.ToTable("FcmTokens");
+                });
+
             modelBuilder.Entity("chathubAPI.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -378,6 +392,14 @@ namespace chathubAPI.Migrations
                     b.HasOne("chathubAPI.Models.Profile", "Profile")
                         .WithMany()
                         .HasForeignKey("ProfileId");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.FcmToken", b =>
+                {
+                    b.HasOne("chathubAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("TokenOwner")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("chathubAPI.Models.Image", b =>

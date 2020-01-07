@@ -1,10 +1,15 @@
 ﻿
 using chathubAPI.DTO;
 using chathubAPI.Helpers;
+using chathubAPI.INTERFACES;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,7 +21,6 @@ namespace chathubAPI.Hubs
 
     public class User
     {
-
         public string Name { get; set; }
         public HashSet<string> ConnectionIds { get; set; }
     }
@@ -30,13 +34,15 @@ namespace chathubAPI.Hubs
                new ConnectionMapping<string>();
         private readonly IUserRepo _userRepo;
         private readonly IMessagesRepo _messagesRepo;
-        public ChatHub(IUserRepo userRepo, IMessagesRepo messagesRepo)
+        private readonly IFcmTokenRepo _fcmTokenRepo;
+        public ChatHub(IUserRepo userRepo, IMessagesRepo messagesRepo, IFcmTokenRepo fcmTokenRepo)
         {
             _userRepo = userRepo;
             _messagesRepo = messagesRepo;
+            _fcmTokenRepo = fcmTokenRepo;
         }
 
-        public async void SendPrivateMessage(ChatMessage message)
+        public async Task SendPrivateMessage(ChatMessage message)
         {
 
             string userId = Context.UserIdentifier;
@@ -57,18 +63,49 @@ namespace chathubAPI.Hubs
                 {
                     _messagesRepo.AddMessage(message);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-
+                    throw new Exception(e.Message);
                 }
+            }
+            try
+            {
+                var toFcmTokens = await _fcmTokenRepo.GetUserTokens(to);
+                // See documentation on defining a message payload.
+                Dictionary<int, Task<string>> dictionary = new Dictionary<int, Task<string>>();
+                for (int i = 0; i < toFcmTokens.Count(); i++)
+                {
+                    var msg = new Message()
+                    {
+                        Notification = new Notification
+                        {
+                            Title = "New message from" + from,
+                            Body = message.message
+                        },
+                        Token = toFcmTokens[i].Token
+                    };
+                    // Send a message to the device corresponding to the provided
+                    // registration token.
+
+                    dictionary[i] = FirebaseMessaging.DefaultInstance.SendAsync(msg);
+                }
+                await Task.WhenAll(dictionary.Values);
+                foreach (var entry in dictionary)
+                {
+                    Console.WriteLine(entry.Key.ToString() + ' ' + entry.Value);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
-        public async void MarkMessageAsRead(ChatMessage message)
+        public void MarkMessageAsRead(ChatMessage message)
         {
             message.unread = false;
             _messagesRepo.Save();
-            
+
         }
         public void SendToAll(ChatMessage message)
         {
@@ -109,7 +146,7 @@ namespace chathubAPI.Hubs
         public List<string> createConnectedList(Dictionary<string, HashSet<string>>.KeyCollection keys)
         {
             List<string> list = new List<string>();
-            foreach (var key in keys)
+            foreach (var key in keys.ToList())
             {
                 list.Add(GetUserEmailFromId(key));
             }

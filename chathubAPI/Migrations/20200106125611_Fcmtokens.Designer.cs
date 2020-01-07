@@ -10,8 +10,8 @@ using chathubAPI.DATA;
 namespace chathubAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190902132151_Comments")]
-    partial class Comments
+    [Migration("20200106125611_Fcmtokens")]
+    partial class Fcmtokens
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -236,6 +236,20 @@ namespace chathubAPI.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.FcmToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("TokenOwner");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("TokenOwner");
+
+                    b.ToTable("FcmTokens");
+                });
+
             modelBuilder.Entity("chathubAPI.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -267,11 +281,11 @@ namespace chathubAPI.Migrations
                 {
                     b.Property<int>("CommentId");
 
-                    b.Property<string>("CommentById");
+                    b.Property<int>("ImageId");
 
-                    b.HasKey("CommentId", "CommentById");
+                    b.HasKey("CommentId", "ImageId");
 
-                    b.HasIndex("CommentById");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("ImageComments");
                 });
@@ -382,6 +396,14 @@ namespace chathubAPI.Migrations
                         .HasForeignKey("ProfileId");
                 });
 
+            modelBuilder.Entity("chathubAPI.Models.FcmToken", b =>
+                {
+                    b.HasOne("chathubAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("TokenOwner")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("chathubAPI.Models.Image", b =>
                 {
                     b.HasOne("chathubAPI.Models.Profile", "Profile")
@@ -392,14 +414,14 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("chathubAPI.Models.ImageComment", b =>
                 {
-                    b.HasOne("chathubAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("CommentById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("chathubAPI.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("chathubAPI.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
