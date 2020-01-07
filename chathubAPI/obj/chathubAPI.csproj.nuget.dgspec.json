@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj": {}
+    "C:\\Users\\asdf\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj": {
+    "C:\\Users\\asdf\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj",
+        "projectUniqueName": "C:\\Users\\asdf\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj",
         "projectName": "chathubAPI",
-        "projectPath": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj",
-        "packagesPath": "C:\\Users\\GGA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\GGA\\Desktop\\chatAPI\\chathubAPI\\obj\\",
+        "projectPath": "C:\\Users\\asdf\\Desktop\\chatAPI\\chathubAPI\\chathubAPI.csproj",
+        "packagesPath": "C:\\Users\\asdf\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\asdf\\Desktop\\chatAPI\\chathubAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\GGA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\asdf\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,7 +41,15 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[1.9.1, )"
+            },
             "Microsoft.AspNet.SignalR": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "Microsoft.AspNet.SignalR.Core": {
               "target": "Package",
               "version": "[2.4.1, )"
             },
@@ -80,10 +88,16 @@
             }
           },
           "imports": [
-            "net461"
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
           ],
           "assetTargetFallback": true,
-          "warn": true
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

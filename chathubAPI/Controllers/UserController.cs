@@ -6,8 +6,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using chathubAPI.DATA;
+using chathubAPI.INTERFACES;
 using chathubAPI.Models;
 using chathubAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +25,19 @@ namespace chathubAPI.Controllers
         readonly UserManager<IdentityUser> _userManager;
         readonly SignInManager<IdentityUser> _signInManager;
         readonly IProfileRepo _profileRepo;
+        readonly IFcmTokenRepo _fcmTokenRepo;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext,IProfileRepo profileRepo)
+        public UserController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IFcmTokenRepo fcmTokenRepo,
+            IProfileRepo profileRepo
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _profileRepo = profileRepo;
+            _fcmTokenRepo = fcmTokenRepo;
         }
 
 
@@ -39,20 +48,24 @@ namespace chathubAPI.Controllers
             try
             {
                 var user = new User { UserName = credentials.Email, Email = credentials.Email };
-            
+
                 var result = await _userManager.CreateAsync(user, credentials.Password);
-                _profileRepo.Add(user);
+
                 if (!result.Succeeded)
+                {
+
                     return Conflict(result.Errors);
+                }
 
-
-                return Ok(CreateToken(user));
+                _profileRepo.Add(user);
+                string token = CreateToken(user);
+                return Ok(token);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Ok(ex);
             }
-     
+
         }
 
 
@@ -80,6 +93,38 @@ namespace chathubAPI.Controllers
             }
 
         }
+
+        [HttpPost("fcmToken")]
+        [Authorize]
+        public async Task<IActionResult> AddToken([FromBody]FcmToken fcmToken)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            fcmToken.TokenOwner = userId;
+            try
+            {
+                FcmToken existingToken = await _fcmTokenRepo.Read(fcmToken.Token);
+                if (existingToken != null && existingToken.TokenOwner != fcmToken.TokenOwner)
+                {
+                    await _fcmTokenRepo.Update(fcmToken.Token, fcmToken.TokenOwner);
+                    return Ok();
+
+                }
+                else if (existingToken == null)
+                {
+                    await _fcmTokenRepo.Create(fcmToken.Token, fcmToken.TokenOwner);
+                    return Ok();
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         string CreateToken(IdentityUser user)
         {
             var claims = new Claim[]

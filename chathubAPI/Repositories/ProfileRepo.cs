@@ -23,7 +23,7 @@ namespace chathubAPI.Repositories
                 UserId = user.Id,
                 Alias = user.Email.Split('@').First(),
                 User = user,
-                Avatar = "resources/images/facebook.jpeg",
+                Avatar = "",
                 Description = "No description yet.."
             };
             try
