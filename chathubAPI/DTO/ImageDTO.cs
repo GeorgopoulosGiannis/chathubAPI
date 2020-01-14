@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace chathubAPI.DTO
 {
-    public class ImageDTO
+    public class UploadImageDTO
     {
-        public string Email { get; set; }
-
-        public string Path { get; set; }
+        public string UploaderEmail { get; set; }
+        public string FileName { get; set; }
+        public string FileType { get; set; }
+        public string DataBase64 { get; set; }
     }
 }

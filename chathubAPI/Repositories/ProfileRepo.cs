@@ -1,4 +1,5 @@
 ﻿using chathubAPI.DATA;
+using chathubAPI.DTO;
 using chathubAPI.Helpers;
 using chathubAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -51,14 +52,23 @@ namespace chathubAPI.Repositories
             }
         }
 
-        public bool Update(Profile profile)
+        public bool Update(Profile prof)
         {
             try
             {
-                Profile oldProf = _dbContext.Profiles.Where(x => x.UserId == profile.UserId).FirstOrDefault();
-                oldProf.Alias = profile.Alias;
-                oldProf.Avatar = profile.Avatar;
-                oldProf.Description = profile.Description;
+                Profile oldProf = _dbContext.Profiles.Where(x => x.UserId == prof.UserId).FirstOrDefault();
+                if (!String.IsNullOrWhiteSpace(prof.Alias))
+                {
+                    oldProf.Alias = prof.Alias;
+                }
+                if (!String.IsNullOrWhiteSpace(prof.Avatar))
+                {
+                    oldProf.Avatar = prof.Avatar;
+                }
+                if (!String.IsNullOrWhiteSpace(prof.Description))
+                {
+                    oldProf.Description = prof.Description;
+                }
                 _dbContext.Update(oldProf);
                 _dbContext.SaveChangesAsync();
                 return true;

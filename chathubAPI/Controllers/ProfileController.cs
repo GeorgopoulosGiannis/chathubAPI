@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using chathubAPI.DTO;
@@ -53,14 +54,18 @@ namespace chathubAPI.Controllers
 
         [Authorize]
         [HttpPost("update")]
-        public async Task<IActionResult> Update(ProfileDTO prof)
+        public async Task<IActionResult> Update([FromBody]ProfileDTO prof)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Profile oldProf = _profileRepo.Get(userId);
-            oldProf.Alias = prof.Alias;
-            oldProf.Avatar = prof.Avatar;
-            oldProf.Description = prof.Description;
-            if (_profileRepo.Update(oldProf))
+            Profile locProf = new Profile
+            {
+                Alias = prof.Alias,
+                Description = prof.Description,
+                Avatar = prof.Avatar,
+                UserId = userId
+               
+            };
+            if (_profileRepo.Update(locProf))
             {
                 _profileRepo.Save();
                 return Ok();
@@ -83,20 +88,18 @@ namespace chathubAPI.Controllers
             List<Relationship> rels = _relationshipRepo.GetRelationshipsAllStatus(userId);
             List<ProfileDTO> profsDTO = new List<ProfileDTO>();
 
-        
-
-                foreach (var prof in profs)
+            foreach (var prof in profs)
+            {
+                foreach (var rel in rels)
                 {
-                    foreach (var rel in rels)
+                    if (prof.UserId == rel.User_OneId || prof.UserId == rel.User_TwoId)
                     {
-                        if (prof.UserId == rel.User_OneId || prof.UserId == rel.User_TwoId)
-                        {
-                            cloneProfs.Remove(prof);
-                        }
+                        cloneProfs.Remove(prof);
                     }
-
                 }
-            
+
+            }
+
             if (cloneProfs.Count < 20)
             {
                 currentPage += 1;
