@@ -81,8 +81,8 @@ namespace chathubAPI
                 {
                     IssuerSigningKey = signingKey,
                     ValidateAudience = false,
-                    ValidateIssuer = false,
-                    ValidateLifetime = false,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
                 cfg.Events = new JwtBearerEvents

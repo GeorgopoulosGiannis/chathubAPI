@@ -36,16 +36,17 @@ namespace chathubAPI.Controllers
             {
                 string userId = _userRepo.GetUserIdFromEmail(email);
                 if (userId != null)
-                {
-
+                {   
                     Profile profile = _profileRepo.Get(userId);
+                    
                     ProfileDTO profDTO = new ProfileDTO
                     {
                         Alias = profile.Alias,
                         Avatar = profile.Avatar,
                         Description = profile.Description,
-                        Email = email
-                    };
+                        Email = email,
+                        ImageURLs=profile.Images.Select(i => i.Path).ToArray()
+                };
                     return Ok(profDTO);
                 }
             }
@@ -67,7 +68,6 @@ namespace chathubAPI.Controllers
             };
             if (_profileRepo.Update(locProf))
             {
-                _profileRepo.Save();
                 return Ok();
 
             }

@@ -16,7 +16,7 @@ namespace chathubAPI.DATA
         public DbSet<Relationship> Relationships { get; set; }
 
         public DbSet<Profile> Profiles { get; set; }
-
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Image> Images { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
@@ -41,7 +41,22 @@ namespace chathubAPI.DATA
                 entity.Property(x => x.timeStamp).IsRequired();
                 entity.Property(x => x.message).IsRequired();
             });
+            builder.Entity<Post>(entity =>
+            {
+                entity.ToTable("Posts");
+                entity.HasKey(x => x.Id);
+                entity.HasOne(x => x.Image)
+                    .WithMany(x => x.Posts)
+                    .HasForeignKey(x => x.ImageId);
 
+            });
+            builder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(x => x.Post)
+                    .WithMany(x => x.Comments)
+                    .HasForeignKey(x => x.Id);
+            });
             builder.Entity<Relationship>(entity =>
             {
                 entity.HasKey(x => new { x.User_OneId, x.User_TwoId });

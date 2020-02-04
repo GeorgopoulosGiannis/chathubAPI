@@ -21,6 +21,7 @@ namespace chathubAPI.Repositories
             return _dbContext.Images.Where(x => x.Id == imageId).FirstOrDefault();
         }
 
+        // TODO add paging
         public List<Image> GetAllByProfile(string profileId)
         {
 

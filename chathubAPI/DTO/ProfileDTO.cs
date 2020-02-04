@@ -12,5 +12,6 @@ namespace chathubAPI.DTO
         public string Description { get; set; }
 
         public string Alias { get; set; }
+        public string[] ImageURLs { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace chathubAPI.Controllers
             _likeImageRepo = likeImageRepo;
         }
 
-        [HttpGet]
+        [HttpGet("profile")]
         public async Task<IActionResult> GetProfileImages(string email)
         {
             if (email != null)

@@ -44,7 +44,7 @@ namespace chathubAPI.Repositories
         {
             try
             {
-                return _dbContext.Profiles.Where(x => x.UserId == userId).FirstOrDefault();
+                return _dbContext.Profiles.Where(x => x.UserId == userId).Include(x=>x.Images).FirstOrDefault();
             }
             catch (Exception ex)
             {

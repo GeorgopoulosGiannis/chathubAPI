@@ -80,7 +80,6 @@ namespace chathubAPI.Controllers
                 {
                     return Unauthorized();
                 }
-
                 else
                 {
                     var user = await _userManager.FindByEmailAsync(credentials.Email);
@@ -93,15 +92,15 @@ namespace chathubAPI.Controllers
             }
 
         }
-
-        [HttpPost("fcmToken")]
         [Authorize]
+        [HttpPost("fcmToken")]
         public async Task<IActionResult> AddToken([FromBody]FcmToken fcmToken)
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            fcmToken.TokenOwner = userId;
+        
             try
             {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                fcmToken.TokenOwner = userId;
                 FcmToken existingToken = await _fcmTokenRepo.Read(fcmToken.Token);
                 if (existingToken != null && existingToken.TokenOwner != fcmToken.TokenOwner)
                 {
@@ -121,6 +120,7 @@ namespace chathubAPI.Controllers
             }
             catch (Exception e)
             {
+
                 throw new Exception(e.Message);
             }
         }

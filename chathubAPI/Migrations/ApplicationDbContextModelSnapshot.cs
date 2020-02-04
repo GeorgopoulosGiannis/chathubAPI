@@ -211,9 +211,7 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("chathubAPI.Models.Comment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
 
                     b.Property<string>("Content");
 
@@ -299,6 +297,35 @@ namespace chathubAPI.Migrations
                     b.HasIndex("LikedById");
 
                     b.ToTable("LikedImages");
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedById");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<int>("ImageId");
+
+                    b.Property<string>("ProfileId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("UpdatedById");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("chathubAPI.Models.Profile", b =>
@@ -389,6 +416,11 @@ namespace chathubAPI.Migrations
 
             modelBuilder.Entity("chathubAPI.Models.Comment", b =>
                 {
+                    b.HasOne("chathubAPI.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("chathubAPI.Models.Profile", "Profile")
                         .WithMany()
                         .HasForeignKey("ProfileId");
@@ -434,6 +466,18 @@ namespace chathubAPI.Migrations
                         .WithMany()
                         .HasForeignKey("LikedById")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("chathubAPI.Models.Post", b =>
+                {
+                    b.HasOne("chathubAPI.Models.Image", "Image")
+                        .WithMany("Posts")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("chathubAPI.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId");
                 });
 
             modelBuilder.Entity("chathubAPI.Models.Profile", b =>

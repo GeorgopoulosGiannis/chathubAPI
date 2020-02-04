@@ -17,7 +17,6 @@ namespace chathubAPI.Models
         public string Alias { get; set; }
         public string Avatar { get; set; }
         public string Description { get; set; }
-
         public IEnumerable<Image> Images { get; set; }
     }
 }
