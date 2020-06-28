@@ -16,96 +16,91 @@ namespace chathubAPI.Repositories
             _dbContext = dbContext;
         }
 
-        public int Add(string content, string profileId)
+        public string Add(string content, string profileId)
         {
-            if (content != null && profileId != null)
-            {
-                try
-                {
-                    Comment comment = new Comment
-                    {
-                        Content = content,
-                        CreatedById = profileId,
-                        DateCreated = DateTime.UtcNow,
-                        DateUpdated = DateTime.UtcNow,
-                        ProfileId = profileId,
-                        UpdatedById = profileId
-                    };
-                    _dbContext.Comments.Add(comment);
-                    _dbContext.SaveChanges();
-                    return comment.Id;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-            else
-            {
-                return 0;
-            }
-        }
 
-        public Comment Update(Comment comment, string updatedById)
-        {
             try
             {
-                Comment comm = _dbContext.Comments.Find(comment.Id);
-                comm.DateUpdated = DateTime.UtcNow;
-                comm.UpdatedById = updatedById;
-                comm.Content = comment.Content;
-                comm.DateCreated = comment.DateCreated;
-                comm.CreatedById = comment.CreatedById;
-                comm.ProfileId = comment.ProfileId;
-                _dbContext.Comments.Update(comm);
-                _dbContext.SaveChangesAsync();
-                return comm;
+                Comment comment = new Comment
+                {
+                    Content = content,
+                    CreatedById = profileId,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    ProfileId = profileId,
+                    UpdatedById = profileId
+                };
+                _dbContext.Comments.Add(comment);
+                _dbContext.SaveChanges();
+                return comment.Id;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+    
 
+    public Comment Update(Comment comment, string updatedById)
+    {
+        try
+        {
+            Comment comm = _dbContext.Comments.Find(comment.Id);
+            comm.DateUpdated = DateTime.UtcNow;
+            comm.UpdatedById = updatedById;
+            comm.Content = comment.Content;
+            comm.DateCreated = comment.DateCreated;
+            comm.CreatedById = comment.CreatedById;
+            comm.ProfileId = comment.ProfileId;
+            _dbContext.Comments.Update(comm);
+            _dbContext.SaveChangesAsync();
+            return comm;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
         }
 
-        public Comment FindById(int commentId)
+    }
+
+    public Comment FindById(int commentId)
+    {
+        try
+        {
+            return _dbContext.Comments.Find(commentId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+
+    public bool HardDelete(Comment comment)
+    {
+        if (comment != null)
         {
             try
             {
-                return _dbContext.Comments.Find(commentId);
+                _dbContext.Comments.Remove(comment);
+                _dbContext.SaveChangesAsync();
+                return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
-
-        public bool HardDelete(Comment comment)
+        else
         {
-            if(comment != null)
-            {
-                try
-                {
-                    _dbContext.Comments.Remove(comment);
-                    _dbContext.SaveChangesAsync();
-                    return true;
-                }
-                catch(Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        public void Save()
-        {
-            _dbContext.SaveChangesAsync();
+            return false;
         }
     }
+
+
+    public void Save()
+    {
+        _dbContext.SaveChangesAsync();
+    }
+}
 }

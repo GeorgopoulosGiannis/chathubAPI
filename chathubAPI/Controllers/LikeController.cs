@@ -26,7 +26,7 @@ namespace chathubAPI.Controllers
         }
 
         [HttpPost("like")]
-        public async Task<IActionResult> LikeImage([FromBody]int imageId)
+        public async Task<IActionResult> LikeImage([FromBody]string imageId)
         {
 
 
@@ -45,7 +45,7 @@ namespace chathubAPI.Controllers
         }
 
         [HttpPost("unlike")]
-        public async Task<IActionResult> UnlikeImage([FromBody]int imageId)
+        public async Task<IActionResult> UnlikeImage([FromBody]string imageId)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             LikedImage img = _likeImageRepo.CheckIfLiked(imageId, userId);
@@ -61,7 +61,7 @@ namespace chathubAPI.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetImageLikes(int imageId)
+        public async Task<IActionResult> GetImageLikes(string imageId)
         {
             int likes = _likeImageRepo.CountImageLikes(imageId);
             if(likes > 0)

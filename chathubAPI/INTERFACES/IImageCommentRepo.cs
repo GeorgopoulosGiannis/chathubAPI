@@ -8,10 +8,10 @@ namespace chathubAPI.Repositories
 {
     public interface IImageCommentRepo
     {
-        bool CommentImage(int commentId, int imageId);
+        bool CommentImage(string commentId, string imageId);
 
         bool DeleteImageComment(ImageComment imageComment);
-        List<ImageComment> GetAllImageComments(int imageId);
+        List<ImageComment> GetAllImageComments(string imageId);
 
         void Save();
     }

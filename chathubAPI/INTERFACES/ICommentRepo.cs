@@ -8,7 +8,7 @@ namespace chathubAPI.Repositories
 {
     public interface ICommentRepo
     {
-        int Add(string content, string profileId);
+        string Add(string content, string profileId);
         Comment Update(Comment comment, string updatedById);
         Comment FindById(int commentId);
         bool HardDelete(Comment comment);

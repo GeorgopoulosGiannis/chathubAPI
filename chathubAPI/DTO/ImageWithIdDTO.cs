@@ -7,7 +7,7 @@ namespace chathubAPI.DTO
 {
     public class ImageWithIdDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Path { get; set; }
     }
 }

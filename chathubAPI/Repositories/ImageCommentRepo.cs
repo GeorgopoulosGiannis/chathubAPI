@@ -17,7 +17,7 @@ namespace chathubAPI.Repositories
             _dbContext = dbContext;
         }
 
-        public bool CommentImage(int commentId,int imageId)
+        public bool CommentImage(string commentId,string imageId)
         {
            
             
@@ -54,7 +54,7 @@ namespace chathubAPI.Repositories
             }
         }
 
-        public List<ImageComment> GetAllImageComments(int imageId)
+        public List<ImageComment> GetAllImageComments(string imageId)
         {
             try
             {

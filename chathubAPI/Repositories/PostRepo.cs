@@ -21,6 +21,7 @@ namespace chathubAPI.Repositories
         {
             try
             {
+                post.CreatedById = post.Id;
                 await _dbContext.Posts.AddAsync(post).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -57,7 +58,7 @@ namespace chathubAPI.Repositories
 
         }
 
-        public async Task<Post> Read(int postId)
+        public async Task<Post> Read(string postId)
         {
             try
             {

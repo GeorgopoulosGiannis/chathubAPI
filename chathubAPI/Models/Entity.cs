@@ -7,7 +7,7 @@ namespace chathubAPI.Models
 {
     public class Entity
     {
-       public int Id { get; set; }
+       public string Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public string CreatedById { get; set; }

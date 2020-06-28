@@ -16,7 +16,7 @@ namespace chathubAPI.Repositories
             _dbContext = dbContext;
         }
 
-        public bool LikeImage(int imageId, string userId)
+        public bool LikeImage(string imageId, string userId)
         {
             if (userId != null)
             {
@@ -61,7 +61,7 @@ namespace chathubAPI.Repositories
             }
         }
 
-        public LikedImage CheckIfLiked(int imageId, string userId)
+        public LikedImage CheckIfLiked(string imageId, string userId)
         {
 
             try
@@ -75,7 +75,7 @@ namespace chathubAPI.Repositories
             }
         }
 
-        public int CountImageLikes(int imageId)
+        public int CountImageLikes(string imageId)
         {
             try
             {

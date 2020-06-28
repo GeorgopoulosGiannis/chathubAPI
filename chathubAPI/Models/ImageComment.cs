@@ -7,9 +7,9 @@ namespace chathubAPI.Models
 {
     public class ImageComment
     {
-        public int CommentId { get; set;}
+        public string CommentId { get; set;}
         public Comment Comment { get; set; }
-        public int ImageId { get; set; }
+        public string ImageId { get; set; }
         public Image Image{ get; set; }
     }
 }

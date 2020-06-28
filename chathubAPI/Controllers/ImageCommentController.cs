@@ -24,7 +24,7 @@ namespace chathubAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int imageId)
+        public async Task<IActionResult> Get(string imageId)
         {
             try
             {

@@ -7,7 +7,7 @@ namespace chathubAPI.Models
 {
     public class LikedImage
     {
-        public int ImageId { get; set; }
+        public string ImageId { get; set; }
         public Image Image { get; set; }
         public string LikedById { get; set; }
         public User User { get; set; }

@@ -9,6 +9,6 @@ namespace chathubAPI.DTO
     {
         public string Content { get; set; }
 
-        public int ImageId { get; set; }
+        public string ImageId { get; set; }
     }
 }

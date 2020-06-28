@@ -16,7 +16,7 @@ namespace chathubAPI.Repositories
             _dbContext = dbContext;
         }
 
-        public Image Get(int imageId)
+        public Image Get(string imageId)
         {
             return _dbContext.Images.Where(x => x.Id == imageId).FirstOrDefault();
         }

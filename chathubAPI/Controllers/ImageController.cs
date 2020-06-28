@@ -65,7 +65,7 @@ namespace chathubAPI.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             Image image = _imageRepo.Get(id);
             int imageLikes = _likeImageRepo.CountImageLikes(image.Id);
@@ -104,7 +104,7 @@ namespace chathubAPI.Controllers
                 {
                     if (stream.CanWrite)
                     {
-                        await stream.WriteAsync(byteArray, 0, byteArray.Length);
+                        await stream.WriteAsync(byteArray, 0, byteArray.Length).ConfigureAwait(false);
                         _imageRepo.Add(relativeDirectoryPath + "/" + imageDTO.FileName, userId); ;
                         return Ok(relativeDirectoryPath + "/" + imageDTO.FileName);
                     }
@@ -115,7 +115,7 @@ namespace chathubAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody]int imageId)
+        public async Task<IActionResult> Delete([FromBody]string imageId)
         {
             if (_imageRepo.HardDelete(_imageRepo.Get(imageId)))
             {

@@ -8,7 +8,7 @@ namespace chathubAPI.Repositories
 {
     public interface IImageRepo 
     {
-        Image Get(int imageId);
+        Image Get(string imageId);
         List<Image> GetAllByProfile(string profileId);
         bool Add(string path, string profileId);
         bool HardDelete(Image image);

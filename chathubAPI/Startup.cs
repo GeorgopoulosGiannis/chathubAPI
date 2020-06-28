@@ -63,6 +63,7 @@ namespace chathubAPI
             services.AddScoped<ICommentRepo, CommentRepo>();
             services.AddScoped<IImageCommentRepo, ImageCommentRepo>();
             services.AddScoped<IFcmTokenRepo, FcmTokenRepo>();
+            services.AddScoped<IPostRepo, PostRepo>();
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
@@ -106,7 +107,8 @@ namespace chathubAPI
           
             FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.FromFile("C:\\Users\\asdf\\Downloads\\rn-social-network-firebase-adminsdk-mdaw2-56b274fb27.json")
+                //Credential = GoogleCredential.FromFile("C:\\Users\\asdf\\Downloads\\rn-social-network-firebase-adminsdk-mdaw2-ebdfcb03aa.json")
+                Credential = GoogleCredential.GetApplicationDefault()
             });
 
             services.AddSwaggerGen(c =>

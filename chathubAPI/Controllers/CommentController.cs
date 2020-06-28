@@ -36,9 +36,9 @@ namespace chathubAPI.Controllers
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 try
                 {
-                    int commentId = _commentRepo.Add(commentImageDTO.Content, userId);
+                    string commentId = _commentRepo.Add(commentImageDTO.Content, userId);
                     _commentRepo.Save();
-                    if ( commentId != 0)
+                    if ( String.IsNullOrEmpty(commentId))
                     {
                         _imageCommentRepo.CommentImage(commentId, commentImageDTO.ImageId);
                         return Ok();
