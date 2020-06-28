@@ -7,3 +7,7 @@ You will need to have a firebase app in order to run this project.
 3) Add file path in environment from powershell with command $env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\username\Downloads\service-account-file.json"(Windows)
 4) Run update-database command from powershell in order for project to auto-create database.
 5) Run project with NgrokTEST launch-settings.
+
+### Screenshots
+
+![Alt text](/chathubAPI/Resources/PrntScreen1.png?raw=true)
