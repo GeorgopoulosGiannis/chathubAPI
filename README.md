@@ -11,3 +11,9 @@ You will need to have a firebase app in order to run this project.
 ### Screenshots
 
 ![Alt text](/chathubAPI/Resources/prntScreen1.png?raw=true)
+
+![Alt text](/chathubAPI/Resources/prntScreen2.png?raw=true)
+
+![Alt text](/chathubAPI/Resources/prntScreen3.png?raw=true)
+
+![Alt text](/chathubAPI/Resources/prntScreen4.png?raw=true)
